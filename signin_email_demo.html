@@ -1,0 +1,35 @@
+<html>
+<head>
+  <title>Google+ Sign-in button demo: rendering with JavaScript</title>
+  <style type="text/css">
+  html, body { margin: 0; padding:0;}
+  #signin-button {
+   padding: 5px;
+  }
+  #oauth2-results pre { margin: 0; padding:0; width: 600px;}
+  .hide { display: none;}
+  .show { display: block;}
+  </style>
+
+ <script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
+<script>
+  
+</script>
+
+
+  <script type="text/javascript">
+       var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (xhttp.readyState == 4 && xhttp.status == 200) {
+            document.getElementById("demo").innerHTML = xhttp.responseText;
+          }
+        };
+        xhttp.open("GET", "demo_get.asp", true);
+        xhttp.send();
+  </script>
+
+  </head>
+  <body onload ="renderBtn()">
+     <div id="renderMe"></div>  
+  </body>
+</html>
