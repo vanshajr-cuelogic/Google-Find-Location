@@ -16,6 +16,8 @@ function initMap() {
             lat: -33.867,
             lng: 151.206
         },
+        streetViewControl: true,
+         mapTypeId: 'coordinate',
         zoom: 15,
         styles: [{
             stylers: [{
@@ -86,11 +88,12 @@ function initAutocomplete() {
             lat: -34.397,
             lng: 150.644
         },
+        streetViewControl: true,
         zoom: 15,
         styles: [{
-            stylers: [{
-                visibility: 'simplified'
-            }]
+        stylers: [{
+            visibility: 'simplified'
+        }]
         }, {
             elementType: 'labels',
             stylers: [{
