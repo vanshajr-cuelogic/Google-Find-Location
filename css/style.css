@@ -21,7 +21,6 @@ html, body {
 
         #pac-input,#resturant-input {
           background-color: #fff;
-          font-family: Roboto;
           font-size: 15px;
           font-weight: 300;
           margin-left: 12px;
@@ -34,10 +33,10 @@ html, body {
           border-color: #4d90fe;
         }
 
-        .pac-container {
+       /* .pac-container {
           font-family: Roboto;
         }
-
+*/
         #type-selector {
           color: #fff;
           background-color: #4d90fe;
@@ -45,7 +44,6 @@ html, body {
         }
 
         #type-selector label {
-          font-family: Roboto;
           font-size: 13px;
           font-weight: 300;
         }
@@ -69,9 +67,23 @@ html, body {
           list-style-type: none;
           text-transform: uppercase;
         }
-         .nav-option ul li a{
+        .nav-option ul li a{
           text-decoration: none;
           color: #fff;
+         }
+        .nav-option ul li button,
+        .nav-option ul li button:focus,
+        .nav-option ul li button:active{
+          background: transparent;
+          box-shadow: none;
+          border: none;
+          color: #fff;
+          font-size: 19px;
+          margin: 0;
+          padding: 0;
+         }
+         .nav-option ul li button:focus{
+
          }
         .nav-option li{
           padding: 15px;

@@ -5,12 +5,29 @@
     <meta charset="utf-8">
     <link href='https://fonts.googleapis.com/css?family=Slabo+27px|Lato' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/style.css">
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src = "http://plus.google.com/js/client:platform.js" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPOZ8eYlJ-hVhVd5Ye977pQte5NG7xz7s&libraries=places&callback=initAutocomplete&signed_in=true&libraries=places,visualization"
+      async defer></script>
+  
+    <script src="js/google.js"></script>
+
     <title>Search</title>
   </head>
   <body>
      <nav class="nav-option">
       <ul>
-        <li><a href="javascript:void(0)">My Profile</a></li>
+       
+        <li> 
+        <button class="g-signin"
+          data-scope="email"
+          data-clientid="138230497832-e524d5qpd4tkgl45g27nct1j1gb651oc.apps.googleusercontent.com"
+          data-callback="onSignInCallback"
+          data-theme="dark"
+          data-cookiepolicy="single_host_origin">
+          Profile
+        </button></li>
         <li><a href="javascript:void(0)">My Location</a></li>
         <li><a href="javascript:void(0)">Current City Weather</a></li>
         <li><a href="javascript:void(0)">Weather Forecast</a></li>
@@ -18,20 +35,21 @@
         <li><a href="javascript:void(0)">Season</a></li>
         <span id="current_time"></span>
         <span id="city"></span>
-
-
       </ul>
      </nav>
+    
       <input id="pac-input" class="controls" type="text" placeholder="Search Box">
       <input id="resturant-input" class="controls" type="text" placeholder="Enter Resturant Name">
       <div id="map"></div>
 
       <div id="map2"></div>
+      
 
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPOZ8eYlJ-hVhVd5Ye977pQte5NG7xz7s&libraries=places&callback=initAutocomplete&signed_in=true&libraries=places,visualization"
-      async defer></script>
+      <script>
 
-     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-      <script src="js/google.js"></script>
+      
+      </script>
+
   </body>
+
 </html>

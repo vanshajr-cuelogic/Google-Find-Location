@@ -1,3 +1,28 @@
+
+// function addMarker(place) {
+//     var marker = new google.maps.Marker({
+//         map: map,
+//         position: place.geometry.location,
+//         icon: {
+//             url: 'http://maps.gstatic.com/mapfiles/circle.png',
+//             anchor: new google.maps.Point(10, 10),
+//             scaledSize: new google.maps.Size(10, 17)
+//         }
+//     });
+
+//     google.maps.event.addListener(marker, 'click', function() {
+//         service.getDetails(place, function(result, status) {
+//             if (status !== google.maps.places.PlacesServiceStatus.OK) {
+//                 console.error(status);
+//                 return;
+//             }
+//             infoWindow.setContent(result.name);
+//             infoWindow.open(map, marker);
+//         });
+//     });
+// }
+
+
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
     infoWindow.setContent(browserHasGeolocation ?
@@ -24,48 +49,42 @@ function callback(results, status) {
     }
 }
 
-var global_profile_info;
-onSignInCallback();
 
-  /**
-   * Handler for the signin callback triggered after the user selects an account.
-   */
-      function onSignInCallback(resp) {
-        gapi.client.load('plus','v1', function(){
-         var request = gapi.client.plus.people.get({
-           'userId': 'me'
-         });
-         request.execute(function(resp) {
-          global_profile_info = resp
-          console.log(global_profile_info)
-           console.log('Retrieved profile for:' + resp.displayName);
-         });
-    });
+     /*For Finding Location Name*/
+    var loginFinished = function(authResult)
+        {    
+        var token = authResult.access_token;
+        gapi.client.load('plus', 'v1', function()
+         {                           
+         //To get the public posts of his/her using their GOOGLEPLUSID               
+         // window.open("https://www.googleapis.com/plus/v1/people/GOOGLEPLUSID/activities/public?alt=json&access_token="+token+"&maxResults=100");
 
-  }
-    
+        //if you dont know the GOOGLEPLUSID of his/her you can get GOOGLEPLUSID by calling below API with their details(query) in the result 'id' field gives GOOGLEPLUSID
+        window.open("https://www.googleapis.com/plus/v1/people?query=Robert Smith+Alamosa&alt=json&maxResults=20&access_token="+token); 
+         });  
 
-  /**
-   * Sets up an API call after the Google API client loads.
-   */
-  function apiClientLoaded() {
-    gapi.client.plus.people.get({userId: 'me'}).execute(handleEmailResponse);
-  }
+        //OR to see the Public Posts result in console
 
-  /**
-   * Response callback for when the API client receives a response.
-   *
-   * @param resp The API response object with the user email and profile information.
-   */
-  function handleEmailResponse(resp) {
-    var primaryEmail;
-    for (var i=0; i < resp.emails.length; i++) {
-      if (resp.emails[i].type === 'account') primaryEmail = resp.emails[i].value;
-    }
-    document.getElementById('responseContainer').value = 'Primary email: ' +
-        primaryEmail + '\n\nFull Response:\n' + JSON.stringify(resp);
-  }
+        // var request =   gapi.client.request({'path':'/plus/v1/people/GOOGLEPLUSID/activities/public'});
+        //  request.execute(function(resp) {     
+        //          console.log(resp);                                                
+        //  });
 
+         };
+
+        var options = {
+        'callback': loginFinished,
+        'approvalprompt': 'force',
+        'clientid': '1021588205607-6rrjbt1vpm247vdh6gg6r20ahv41aac3.apps.googleusercontent.com  ',
+        'scope': 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me',
+        'requestvisibleactions': 'http://schemas.google.com/CommentActivity http://schemas.google.com/ReviewActivity',
+        'cookiepolicy': 'single_host_origin'
+        };
+
+        var renderBtn = function()
+        {
+         gapi.signin.render('renderMe', options);
+        }
 
 
 function initAutocomplete() {
@@ -93,6 +112,7 @@ function initAutocomplete() {
             }]
         }]
     });
+    console.log(map)
 
     var infoWindow = new google.maps.InfoWindow({
         map: map
@@ -103,6 +123,8 @@ function initAutocomplete() {
  
     var lat;
     var long;
+
+
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -115,6 +137,7 @@ function initAutocomplete() {
             long = pos.lng;
 
             infoWindow.setContent('Your Current Location');
+         //   map.setCenter(pos.lat);
 
 
              var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="
@@ -141,7 +164,6 @@ function initAutocomplete() {
                     }
                  });
                  $('#city').html(city); 
-
             });
 
 
@@ -149,6 +171,7 @@ function initAutocomplete() {
         }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
         });
+  
     } else {
         // Browser doesn't support Geolocation
         handleLocationError(false, infoWindow, map.getCenter());
@@ -163,8 +186,14 @@ function initAutocomplete() {
     var searchBoxRestro = new google.maps.places.SearchBox(rest_input);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(rest_input);
 
-    var markers = [];
+    // Bias the SearchBox results towards current map's viewport.
+    // map.addListener('bounds_changed', function() {
+    //     searchBox.setBounds(map.getBounds());
+    // });
 
+    var markers = [];
+    // Listen for the event fired when the user selects a prediction and retrieve
+    // more details for that place.
     searchBox.addListener('places_changed', function() {
         var places = searchBox.getPlaces();
 
@@ -206,4 +235,8 @@ function initAutocomplete() {
         });
         map.fitBounds(bounds);
     });
+}
+
+var get_data = function(){
+
 }
