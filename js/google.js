@@ -24,14 +24,35 @@ function callback(results, status) {
     }
 }
 
+
+function hide_content(){
+  $(".overlay").hide();
+  $(".profile_details_popup").hide();
+}
+/* ready Function */
+$(document).ready(function(){
+  hide_content();  
+ 
+  $("#profile_details").click(function(){
+    $(".overlay").show();
+    $(".profile_details_popup").show();
+  });
+  $("#close").click(function(){hide_content();});     
+  $("#location_access").click(function(){
+    initMap();
+  })
+});
+
 var global_profile_info;
 onSignInCallback();
-
 
   /**
    * Handler for the signin callback triggered after the user selects an account.
    */
       function onSignInCallback(resp) {
+        hide_content();
+       
+
         gapi.client.load('plus','v1', function(){
          var request = gapi.client.plus.people.get({
            'userId': 'me'
@@ -40,10 +61,16 @@ onSignInCallback();
           global_profile_info = resp
           console.log(global_profile_info)
            console.log('Retrieved profile for:' + resp.displayName);
-           $("#user_name").text(resp.displayName)
-           $("#user_name").attr('href',resp.url)
+           $("#user_name, #name").text(resp.displayName);
+           $("#user_name, #name").text(resp.displayName);
+           $("#user_name").attr('href',resp.url);
            $("#user_profile").show();
            $("#user_profile").attr('src',resp.image.url);
+           var url = resp.image.url.split('?');
+           $("#img_profile").attr('src',url[0]);
+           $("#profile_id").text(resp.id);
+           $("#gender").text(resp.gender);
+           $("#email").text(resp.emails[0].value);
          
          });
     });
@@ -58,11 +85,6 @@ onSignInCallback();
     gapi.client.plus.people.get({userId: 'me'}).execute(handleEmailResponse);
   }
 
-  /**
-   * Response callback for when the API client receives a response.
-   *
-   * @param resp The API response object with the user email and profile information.
-   */
   function handleEmailResponse(resp) {
     var primaryEmail;
     for (var i=0; i < resp.emails.length; i++) {
@@ -72,6 +94,66 @@ onSignInCallback();
         primaryEmail + '\n\nFull Response:\n' + JSON.stringify(resp);
   }
 
+var map;
+var infowindow;
+var pyrmont;
+
+function initMap() {
+
+   if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+function showPosition(position) {
+     pyrmont = {lat: position.coords.latitude, lng: position.coords.longitude};
+}
+
+  console.log(pyrmont.lat)
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: pyrmont,
+    zoom: 16
+  });
+
+  infowindow = new google.maps.InfoWindow();
+
+  var service = new google.maps.places.PlacesService(map);
+  service.nearbySearch({
+    location: pyrmont,
+    radius: 500,
+    types: ['restaurant']
+  }, callback);
+}
+
+function callback(results, status) {
+  if (status === google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      console.log(results[i])
+      createMarker(results[i]);
+
+      $("#Location_name").append("<li id=detail_"+i+">"+results[i].name+"<br/>"+results[i].vicinity+"</li>");
+     // $("#detail"+i).append("<div>"+results[i].type+"</div>");
+
+    }
+  }
+}
+
+function createMarker(place) {
+  /*store*/
+  var placeLoc = place.geometry.location;
+  var marker = new google.maps.Marker({
+    map: map,
+    position: place.geometry.location
+  });
+
+  google.maps.event.addListener(marker, 'mouseover', function() {
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
+  });
+}
+
+
+google.maps.event.addDomListener(window, 'load', initialize);
 
 
 function initAutocomplete() {
@@ -83,10 +165,7 @@ function initAutocomplete() {
     },100);
 
     var map = new google.maps.Map(document.getElementById('map'), {
-        center: {
-            lat: -20.397,
-            lng: 150.644
-        },
+        center: {lat: -33.866, lng: 151.196},
         streetViewControl: true,
         zoom: 14,
         styles: [{
@@ -101,6 +180,9 @@ function initAutocomplete() {
         }]
     });
 
+   // var service = new google.maps.places.PlacesService(map);
+
+
     var infoWindow = new google.maps.InfoWindow({
         map: map
     });
@@ -110,7 +192,6 @@ function initAutocomplete() {
  
     var lat;
     var long;
-
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
             var pos = {
@@ -120,11 +201,11 @@ function initAutocomplete() {
             infoWindow.setPosition(pos);
             lat = pos.lat;
             long = pos.lng;
-            infoWindow.setContent("Loc");
+            infoWindow.setContent('<div id="place_name"></div>');
 
 
              var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="
-               +lat+","+long+"&sensor=false";
+               +lat+","+long+"&sensor=true";
             $.get(url).success(function(data) {
                var loc1 = data.results[0];
                var county, city;
@@ -146,8 +227,9 @@ function initAutocomplete() {
                        }
                     }
                  });
-                 $('#city').html(city); 
 
+                 $('#city').html(city); 
+                 $("#place_name").html(city);
             });
 
 
@@ -163,6 +245,8 @@ function initAutocomplete() {
     // Create the search box and link it to the UI element.
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.bindTo('bounds', map);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
     var rest_input = document.getElementById('resturant-input');
@@ -170,6 +254,15 @@ function initAutocomplete() {
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(rest_input);
 
     var markers = [];
+
+    var infowindow = new google.maps.InfoWindow();
+    var marker = new google.maps.Marker({
+      map: map
+    });
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+
 
     searchBox.addListener('places_changed', function() {
         var places = searchBox.getPlaces();
@@ -185,30 +278,36 @@ function initAutocomplete() {
         markers = [];
 
         // For each place, get the icon, name and location.
+         var service = new google.maps.places.PlacesService(map);
+
         var bounds = new google.maps.LatLngBounds();
+         var placesList = document.getElementById('places');
+
         places.forEach(function(place) {
-            var icon = {
-                url: place.icon,
-                size: new google.maps.Size(80, 71),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(17, 34),
-                scaledSize: new google.maps.Size(25, 25)
-            };
+            autocomplete.addListener('place_changed', function() {
 
-            // Create a marker for each place.
-            markers.push(new google.maps.Marker({
-                map: map,
-                icon: icon,
-                title: place.name,
-                position: place.geometry.location
-            }));
+              infowindow.close();
+              var place = autocomplete.getPlace();
+              if (!place.geometry) {
+                return;
+              }
 
-            if (place.geometry.viewport) {
-                // Only geocodes have viewport.
-                bounds.union(place.geometry.viewport);
-            } else {
-                bounds.extend(place.geometry.location);
-            }
+              if (place.geometry.viewport) {
+                map.fitBounds(place.geometry.viewport);
+              } else {
+                map.setZoom(15);
+              }
+
+              // Set the position of the marker using the place ID and location.
+              marker.setPlace({
+                placeId: place.name,
+                location: place.geometry.location
+              });
+              marker.setVisible(true);
+              infowindow.setContent('<div><strong>' + place.name + '</strong><br>'+
+                  place.formatted_address);
+                  infowindow.open(map, marker);
+            });
         });
         map.fitBounds(bounds);
     });

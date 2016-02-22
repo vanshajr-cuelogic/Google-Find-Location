@@ -7,18 +7,17 @@
     <link rel="stylesheet" href="css/style.css">
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script src = "http://plus.google.com/js/client:platform.js" async defer></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPOZ8eYlJ-hVhVd5Ye977pQte5NG7xz7s&libraries=places&callback=initAutocomplete&signed_in=true&libraries=places,visualization"
+   
+   <script src = "http://plus.google.com/js/client:platform.js" async defer></script>
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPOZ8eYlJ-hVhVd5Ye977pQte5NG7xz7s&libraries=places&callback=initAutocomplete&signed_in=true&libraries=places,visualization"
       async defer></script>
-  
     <script src="js/google.js"></script>
-
     <title>Search</title>
+
   </head>
   <body>
      <nav class="nav-option">
       <ul>
-       
         <li> 
         <button class="g-signin"
           data-scope="email"
@@ -26,32 +25,49 @@
           data-callback="onSignInCallback"
           data-theme="dark"
           data-cookiepolicy="single_host_origin">
-          Profile
+          Sign In
         </button></li>
-        <li><a href="javascript:void(0)">My Location</a></li>
+        <li><a href="javascript:void(0)" id="profile_details">My Profile</a></li>
+        <li><a href="javascript:void(0)" id="location_access">My Location</a></li>
         <li><a href="javascript:void(0)">Current City Weather</a></li>
         <li><a href="javascript:void(0)">Weather Forecast</a></li>
         <li><a href="javascript:void(0)">Location Time</a></li>
-        <li><a href="javascript:void(0)">Season</a></li>
         <span id="current_time"></span>
         <span id="city"></span>
         <a href="#" target="_blank" id="user_name"></a>
         <img src="#" id="user_profile"/>
       </ul>
      </nav>
-    
+
+      <aside>
+        <ul id="Location_name"></ul>
+      </aside>
+      <div class="profile_details_popup popup_profile">
+          <div class="detail_header">
+           <a href="#" target="_blank" id="name"></a>
+           <button id="close">X</button>
+          </div>
+
+          <div class="detail-section">
+            <span class="profile-img">
+              <img src="#" id="img_profile" width="120px" height="120px;">
+            </span>
+            <span class="user_profile_data">
+            <ul>
+              <li>User's ID :   <span id="profile_id"></span></li>
+              <li>Gender :   <span id="gender"></span></li>
+              <li>Email Address :   <span id="email"></span></li>
+            </ul>
+            </span>
+          </div>
+      </div>
+
       <input id="pac-input" class="controls" type="text" placeholder="Search Box">
       <input id="resturant-input" class="controls" type="text" placeholder="Enter Resturant Name">
       <div id="map"></div>
-
+      <div id="place_details"></div>
       <div id="map2"></div>
-      
-
-      <script>
-
-      
-      </script>
-
+       <div class="overlay"></div>
   </body>
 
 </html>

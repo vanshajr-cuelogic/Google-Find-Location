@@ -109,3 +109,87 @@ html, body {
           width: 32px;
           border-radius: 5px;
         }
+        .profile_details_popup{
+          height: 190px;
+          width: 500px;
+          border:none;
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          background-color: #fff;
+          float: none;
+          margin: auto;
+          z-index: 2;
+          border-radius: 4px;
+        }
+        .detail_header{
+          background: #000;
+          padding:10px; 
+        }
+        .detail-section{
+         margin:10px 15px;
+         overflow: hidden;
+        }
+        #name{
+          color: #fff;
+          text-decoration: none;
+          font-size: 22px;
+          font-weight: bolder;
+          padding: 0;
+        }
+        #close{
+          float: right;
+          margin:5px;
+          cursor: pointer;
+        }
+        .overlay{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #000;
+            opacity: 0.6;
+        }
+        .user_profile_data ul li{
+          list-style-type: none;
+        }
+        .profile-img{
+          float: left;
+          margin: 0 20px 0 0;
+        }
+        .profile-img img{
+          border-radius: 50%;
+        }
+        .user_profile_data li{
+          margin: 20px 0 0 0;
+        }
+        aside{
+            width: auto;
+            max-width: 300px;
+            position: absolute;
+            left: 0px;
+            height: 620px;
+            overflow: auto;
+            z-index: 2;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            -webkit-transition: width 2s; /* Safari */
+            transition: width 2s;
+        }
+        aside ul{
+          margin:0;
+          padding: 0
+        }
+        #Location_name li{
+          display: block;
+          margin: 5px;
+          border-bottom: 1px solid #ccc;
+          padding: 5px 0;
+        }
+        #Location_name li:last-child{
+          border-bottom:none;
+        }
