@@ -27,6 +27,9 @@ html, body {
           padding: 0 11px 0 13px;
           text-overflow: ellipsis;
           width: 300px;
+          color: #000;
+          text-transform: none;
+          margin-top: 10px;
         }
 
         #pac-input:focus {
@@ -73,27 +76,36 @@ html, body {
          }
         .nav-option ul li button,
         .nav-option ul li button:focus,
-        .nav-option ul li button:active{
+        .nav-option ul li button:active,
+        .nav-option ul li button:visited {
           background: transparent;
           box-shadow: none;
           border: none;
           color: #fff;
-          font-size: 19px;
+          font-size: 17px;
           margin: 0;
           padding: 0;
+          text-transform: uppercase;
+          cursor: pointer;
          }
-         .nav-option ul li button:focus{
-
-         }
+      
         .nav-option li{
           padding: 15px;
         }
         .nav-option li:hover{
           background: #A3C5FD;
         }
-        #current_time, #city{
+        #current_time, #city, #user_name, #user_profile{
           float: right;
           color: #fff;
           font-size: 18px;
           padding: 15px 15px 0 0;
+        }
+        #user_name{
+          text-transform: uppercase;
+          text-decoration: none;
+        }
+        #user_profile{
+          width: 32px;
+          border-radius: 5px;
         }

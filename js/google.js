@@ -27,6 +27,7 @@ function callback(results, status) {
 var global_profile_info;
 onSignInCallback();
 
+
   /**
    * Handler for the signin callback triggered after the user selects an account.
    */
@@ -39,6 +40,11 @@ onSignInCallback();
           global_profile_info = resp
           console.log(global_profile_info)
            console.log('Retrieved profile for:' + resp.displayName);
+           $("#user_name").text(resp.displayName)
+           $("#user_name").attr('href',resp.url)
+           $("#user_profile").show();
+           $("#user_profile").attr('src',resp.image.url);
+         
          });
     });
 
@@ -69,6 +75,7 @@ onSignInCallback();
 
 
 function initAutocomplete() {
+    $("#user_profile").hide();
     setInterval(function(){
     var dt = new Date();
     var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
@@ -77,11 +84,11 @@ function initAutocomplete() {
 
     var map = new google.maps.Map(document.getElementById('map'), {
         center: {
-            lat: -34.397,
+            lat: -20.397,
             lng: 150.644
         },
         streetViewControl: true,
-        zoom: 15,
+        zoom: 14,
         styles: [{
         stylers: [{
             visibility: 'simplified'
@@ -113,8 +120,7 @@ function initAutocomplete() {
             infoWindow.setPosition(pos);
             lat = pos.lat;
             long = pos.lng;
-
-            infoWindow.setContent('Your Current Location');
+            infoWindow.setContent("Loc");
 
 
              var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="
@@ -183,7 +189,7 @@ function initAutocomplete() {
         places.forEach(function(place) {
             var icon = {
                 url: place.icon,
-                size: new google.maps.Size(71, 71),
+                size: new google.maps.Size(80, 71),
                 origin: new google.maps.Point(0, 0),
                 anchor: new google.maps.Point(17, 34),
                 scaledSize: new google.maps.Size(25, 25)
