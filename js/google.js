@@ -51,25 +51,75 @@ $(document).ready(function() {
             window.location.reload();
         });
     });
+
     $('#resturant-input').on('change', function() {
         initMap(this.value);
     });
 
+    $("#weather_report").click(function(){
+            var city_name = document.getElementById('pac-input').value;
+            $(function() {
+              // strings to be used to construct request
+              var apiKey = "2dc13940cbd5d31436200ab5ecc5d285";
+              var baseURL = "http://api.openweathermap.org/data/2.5/weather?q="+city_name;
+              // stores latitude and longitude attributes of requested JSON resource
+              var latitude, longitude;
+
+              function getLocation() {
+                /* gets user's location */
+                if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(success, fail);
+                }
+              }
+
+              function success(position) {
+                /* if browser returns location, displays weather for that location */
+
+                latitude = position.coords.latitude;
+                longitude = position.coords.longitude;
+                display(constructRequest(latitude, longitude));
+              }
+
+              function fail() {
+                /* runs if user's location is not returned */
+                console.log('fail');
+              }
+
+              function constructRequest(lat, long) {
+                /* constructs and returns http request based on user's latitude and longitude */
+                return baseURL + "?lat=" + lat + "&lon=" + long + "&APPID=" + apiKey +"&units=metric";
+              }
+
+              function display(req) {
+                /* displays the weather description given by the requested JSON object */
+                $.getJSON(req,
+                  function(data) {
+                    console.log("Here Is over Data : "+data)
+                    $('#display').text(data.weather[0].description);
+                  }
+                );
+              }
+
+              getLocation();
+            });
+    })
+
     /* Gmail API */ 
     $("#check_mail").click(function(){
-        var user_id = document.getElementById("profile_id").value;
-        alert(user_id);
+       //  var user_id = document.getElementById("profile_id").value;
 
+       //  var CLIENT_ID = '138230497832-e524d5qpd4tkgl45g27nct1j1gb651oc.apps.googleusercontent.com';
+       // // var SCOPES = ['https://www.googleapis.com/gmail/v1/users/'+user_id+'/messages'];
+       //   var SCOPES = ['https://www.googleapis.com/auth/gmail.labels'];
 
-        var CLIENT_ID = '138230497832-e524d5qpd4tkgl45g27nct1j1gb651oc.apps.googleusercontent.com';
-        var SCOPES = ['https://www.googleapis.com/gmail/v1/users/'+user_id+'/messages'];
+       //  console.log(CLIENT_ID,SCOPES)
 
-         gapi.auth.authorize(
-              {
-                'client_id': CLIENT_ID,
-                'scope': SCOPES.join(' '),
-                'immediate': true
-              }, handleAuthResult);
+       //   gapi.auth.authorize(
+       //        {
+       //          'client_id': CLIENT_ID,
+       //          'scope': SCOPES.join(' '),
+       //          'immediate': true
+       //        }, handleAuthResult);
 
     });
 
@@ -97,8 +147,8 @@ function onSignInCallback(resp) {
 
         request.execute(function(resp) {
             global_profile_info = resp
-            console.log(global_profile_info)
-            console.log('Retrieved profile for:' + resp.displayName);
+          //console.log(global_profile_info)
+          //console.log('Retrieved profile for:' + resp.displayName);
             $("#user_name, #name").text(resp.displayName);
             $("#user_name, #name").text(resp.displayName);
             $("#user_name").attr('href', resp.url);
