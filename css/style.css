@@ -56,8 +56,9 @@ html, body {
           padding: 0;
         }
         .nav-option{
-          background-color: #A9CAFE;
+          background-color: #4285f4;
           position: relative;
+          opacity: 0.8;
         }
         .nav-option ul{
           margin: 0;
