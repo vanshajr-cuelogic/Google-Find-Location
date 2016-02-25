@@ -59,6 +59,7 @@ $(document).ready(function() {
     });
 
     $("#weather_report").click(function(){
+        /*Called API : "openweathermap.org" */
          $(".weather-forecast").show();
           $(".overlay").show();
             var city_name = document.getElementById('pac-input').value;
