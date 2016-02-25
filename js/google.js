@@ -277,7 +277,6 @@ function handleEmailResponse(resp) {
 }
 
 function initMap(place_search) {
-   
     pyrmont = position_viewport;
     map = new google.maps.Map(document.getElementById('map'), {
         center: pyrmont,
@@ -320,6 +319,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 
 function initAutocomplete() {
+
+    var width_ele = $( window ).width();
+    var height_ele = $( window ).height();
+    var map_height = height_ele-52;
+    $("#map").css('height',map_height);
+    $("aside").css('height',map_height);
 
     $("#user_profile").hide();
     setInterval(function() {
@@ -370,7 +375,7 @@ function initAutocomplete() {
             infoWindow.setContent('<img src="#" id="place_name"/>');
 
 
-            var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&sensor=false";
+            var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&sensor=false";
             $.get(url).success(function(data) {
                 var loc1 = data.results[0];
                 var county, city;
