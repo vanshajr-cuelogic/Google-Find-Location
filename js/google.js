@@ -34,22 +34,24 @@ function hide_content() {
     $(".profile_details_popup").hide();
     $("#resturant-input").hide();
     $("#back_to_main").hide();
+    $(".weather-forecast").hide();
 }
+
 
 /* Ready Function */
 $(document).ready(function() {
     hide_content();
-    
     $("#back_to_main").click(function(){
             window.location.reload();
         });
+
+     $(".close, #close, .overlay").on('click',function() {
+            hide_content();
+        });
+
     $("#profile_details").click(function() {
         $(".overlay").show();
         $(".profile_details_popup").show();
-        $("#close").click(function() {
-            hide_content();
-            window.location.reload();
-        });
     });
 
     $('#resturant-input').on('change', function() {
@@ -57,6 +59,8 @@ $(document).ready(function() {
     });
 
     $("#weather_report").click(function(){
+         $(".weather-forecast").show();
+          $(".overlay").show();
             var city_name = document.getElementById('pac-input').value;
             $(function() {
               // strings to be used to construct request
@@ -85,17 +89,22 @@ $(document).ready(function() {
                 console.log('fail');
               }
 
-              function constructRequest(lat, long) {
+              function constructRequest(lat, longi) {
+               
                 /* constructs and returns http request based on user's latitude and longitude */
-                return baseURL + "?lat=" + lat + "&lon=" + long + "&APPID=" + apiKey +"&units=metric";
+                    return baseURL + "?lat=" + lat + "&lon=" + longi + "&APPID=" + apiKey +"&units=metric";
               }
 
               function display(req) {
                 /* displays the weather description given by the requested JSON object */
                 $.getJSON(req,
                   function(data) {
-                    console.log("Here Is over Data : "+data)
-                    $('#display').text(data.weather[0].description);
+                    console.log(data)
+                    $("#city_name").text(city_name);
+                    $("#city_humid").text(data.main.humidity);
+                    $("#city_temp").text(data.main.temp);
+                    $('#city_status').text(data.weather[0].description);
+                    $('#weather_img').attr('src',"http://openweathermap.org/img/w/"+data.weather[0].icon+".png");
                   }
                 );
               }

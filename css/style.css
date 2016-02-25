@@ -138,9 +138,15 @@ html, body {
           padding: 0;
         }
         #close{
-          float: right;
-          margin:5px;
-          cursor: pointer;
+            float: right;
+            margin: 5px;
+            cursor: pointer;
+            background: red;
+            color: #fff;
+            border-radius: 50%;
+            padding: 4px 7px;
+            border: 1px solid gray;
+            font-weight: bold;
         }
         .overlay{
             position: fixed;
@@ -204,4 +210,39 @@ html, body {
         #place_name{
           width: 30px;
           border-radius: 50%;
+        }
+        .weather-forecast{
+            position: absolute;
+            width: 43%;
+            max-height: 72%;
+            top: 5%;
+            left: 0;
+            z-index: 3;
+            background: #A9CAFE;
+            border-radius: 15px;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            padding: 5px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 26px;
+            text-transform: capitalize;
+            opacity: 0.8;
+            color: #000;
+            border:2px solid #555;
+            overflow: auto;
+        }
+        .weather-icon{
+          width: 12%;
+          position: absolute;
+          top: -2%;
+          left: 0%;
+        }
+        .weather-forecast h1,h2{
+          display: inline-block;
+        }
+        .weather-forecast sup{
+          font-size: 23px;
+          font-weight: bold;
         }

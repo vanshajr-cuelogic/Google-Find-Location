@@ -71,7 +71,16 @@
           </div>
       </div>
 
-      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+      <div class="weather-forecast">
+        <button class="close" id="close">X</button>
+        <div class="city-weather"><h2 class="weather-head" id="city_name"></h2></div>
+        <div class="city-humidity">Humidity : <h2 class="weather-head" id="city_humid"></h2><sup>%</sup></div>
+        <div class="city-temp">Temperature : <h2 class="weather-head" id="city_temp"></h2><sup>o</sup>C</div>
+        <div class="city-status">Current Status : <h2 class="weather-head" id="city_status"></h2></div>
+        <img src="#" id="weather_img" class="weather-icon" alt="weather">
+      </div>
+
+      <input id="pac-input" class="controls" type="text" placeholder="Search Box" value="Pune">
       <select id="resturant-input" class="controls">
         <option>--- Select ---</option>
       </select>
