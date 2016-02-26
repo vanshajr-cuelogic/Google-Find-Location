@@ -35,13 +35,14 @@ function hide_content() {
     $("#resturant-input").hide();
     $("#back_to_main").hide();
     $(".weather-forecast").hide();
+    $("#back_btn").hide();
 }
 
 
 /* Ready Function */
 $(document).ready(function() {
     hide_content();
-    $("#back_to_main").click(function(){
+    $("#back_to_main, #back_btn").click(function(){
             window.location.reload();
         });
 
@@ -56,7 +57,32 @@ $(document).ready(function() {
 
     $('#resturant-input').on('change', function() {
         initMap(this.value);
+        $("aside").show();
     });
+
+    $("#lines").click(function(){
+        $(".nav-option li").click(function(){
+            $(".nav-option").css('display','none');
+        });
+        $(".nav-option").slideToggle( "slow", function() {
+            display:'block'
+        });
+        $("#back_btn").show();
+    });
+
+    $("aside").click(function(){
+        $('aside').toggleClass('aside_height');
+        // $(this).slideUp('slow',function(){
+        //     $(this).css('display','block')
+        //     $(this).animate({height: "94px"}); 
+        // });
+        // if ( addOrRemove ) {
+        //       $( "#foo" ).addClass( className );
+        //     } else {
+        //       $( "#foo" ).removeClass( className );
+        //     }
+    });
+
 
     $("#weather_report").click(function(){
         /*Called API : "openweathermap.org" */
@@ -133,7 +159,7 @@ $(document).ready(function() {
 
     });
 
-    $("#location_access").click(function() {
+    $("#location_access").on('click',function() {
         $("#resturant-input").show();
         $("#back_to_main").show();
     });
@@ -145,11 +171,12 @@ $(document).ready(function() {
 
 
 
-onSignInCallback();
+//onSignInCallback();
 /* Handler for the signin callback triggered after the user selects an account.*/
 function onSignInCallback(resp) {
-    hide_content();
-
+   
+        hide_content();
+   
     gapi.client.load('plus', 'v1', function() {
         var request = gapi.client.plus.people.get({
             'userId': 'me'
@@ -171,6 +198,7 @@ function onSignInCallback(resp) {
             $("#profile_id").attr('value',resp.id)
             $("#gender").text(resp.gender);
             $("#email").text(resp.emails[0].value);
+            $("#place_name").show();
         });
     });
  $("#pac-input").focus();
@@ -227,6 +255,7 @@ function onSignInCallback(resp) {
         });
 
         request.execute(function(resp) {
+            alert()
           var labels = resp.labels;
           console.log(labels)
           appendPre('Labels:');
@@ -319,12 +348,14 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 
 function initAutocomplete() {
-
+    $("#place_name").hide();
     var width_ele = $( window ).width();
     var height_ele = $( window ).height();
     var map_height = height_ele-52;
     $("#map").css('height',map_height);
     $("aside").css('height',map_height);
+
+
 
     $("#user_profile").hide();
     setInterval(function() {
