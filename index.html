@@ -5,18 +5,14 @@
     <meta charset="utf-8">
     <link href='https://fonts.googleapis.com/css?family=Slabo+27px|Lato' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/style.css">
-
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-   <script src="js/place_search.js"></script>
-  
-        <script src = "http://plus.google.com/js/client:platform.js" async defer></script>
-        <script src="https://apis.google.com/js/client.js" async defer></script>
-        <script src="js/google.js"></script>
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPOZ8eYlJ-hVhVd5Ye977pQte5NG7xz7s&libraries=places&callback=initAutocomplete&signed_in=true&libraries=places,visualization"
-      async defer></script>
-
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="js/place_search.js"></script>
+    <script src = "http://plus.google.com/js/client:platform.js" async defer></script>
+    <script src="https://apis.google.com/js/client.js" async defer></script>
+    <script src="js/google.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPOZ8eYlJ-hVhVd5Ye977pQte5NG7xz7s&libraries=places&callback=initAutocomplete&signed_in=true&libraries=places,visualization"
+    async defer></script>
     <title>One Touch</title>
-
   </head>
   <body>
       <div id="back_btn"><</div>
@@ -28,7 +24,7 @@
         <li><a href="javascript:void(0)" id="location_access">Search</a></li>
         <li><a href="javascript:void(0)" id="check_mail">Mail</a></li>
         <li><a href="javascript:void(0)" id="weather_report">Weather Forecast</a></li>
-        <li><a href="javascript:void(0)">Location Time</a></li>
+        <!-- <li><a href="javascript:void(0)">Location Time</a></li> -->
          <li> 
           <button class="g-signin"
             data-scope="email"
@@ -75,11 +71,29 @@
 
       <div class="weather-forecast">
         <button class="close" id="close">X</button>
-        <div class="city-weather"><h2 class="weather-head" id="city_name"></h2></div>
-        <div class="city-humidity">Humidity : <h2 class="weather-head" id="city_humid"></h2><sup>%</sup></div>
-        <div class="city-temp">Temperature : <h2 class="weather-head" id="city_temp"></h2><sup>o</sup>C</div>
-        <div class="city-status">Current Status : <h2 class="weather-head" id="city_status"></h2></div>
-        <img src="#" id="weather_img" class="weather-icon" alt="weather">
+        <div class="toggle_btn">
+          <span id="weather_status" class="active"> Weather Status </span>
+          <span id="weather_forecast"> Weather Forecast </span>
+        </div>
+        <div class="weather_casting">
+          <div class="city-weather"><h2 class="weather-head" id="city_name"></h2></div>
+          <div class="city-humidity">Humidity : <h2 class="weather-head" id="city_humid"></h2><sup>%</sup></div>
+          <div class="city-temp">Temperature : <h2 class="weather-head" id="city_temp"></h2><sup>o</sup>C</div>
+          <div class="city-status">Current Status : <h2 class="weather-head" id="city_status"></h2></div>
+          <img src="#" id="weather_img" class="weather-icon" alt="weather">
+        </div>
+        <div class="weather_forecasting">
+            Next 7 days Weather Forecasting
+            <div class="forecast-details">
+             <ul id="forecast_data">
+            <!--   <span id="date_"></span>
+              <h1 id="date_img"><img src="#" id="date_wise_img"></h1>
+              Humidity : <span id="date_humidity"></span>
+              Min. Temperature :<span id="date_min_temp"></span>
+              Max. Temperature<span id="date_max_temp"></span>
+              Status : <span id="date_status"></span> -->
+            </div>
+        </div>
       </div>
 
       <input id="pac-input" class="controls" type="text" placeholder="Search Box">

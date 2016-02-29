@@ -48,6 +48,7 @@ $(document).ready(function() {
 
      $(".close, #close, .overlay").on('click',function() {
             hide_content();
+            $("#forecast_data li").remove();
         });
 
     $("#profile_details").click(function() {
@@ -72,27 +73,43 @@ $(document).ready(function() {
 
     $("aside").click(function(){
         $('aside').toggleClass('aside_height');
-        // $(this).slideUp('slow',function(){
-        //     $(this).css('display','block')
-        //     $(this).animate({height: "94px"}); 
-        // });
-        // if ( addOrRemove ) {
-        //       $( "#foo" ).addClass( className );
-        //     } else {
-        //       $( "#foo" ).removeClass( className );
-        //     }
     });
 
+   
 
     $("#weather_report").click(function(){
-        /*Called API : "openweathermap.org" */
-         $(".weather-forecast").show();
-          $(".overlay").show();
-            var city_name = document.getElementById('pac-input').value;
-            $(function() {
+        weather_status();
+         $("#weather_status").on('click',function(){
+                $(".weather_forecasting").hide();
+                 $("#weather_forecast").removeClass('active');
+                $(this).addClass('active');
+                $(".weather_casting").show();
+            });
+            $("#weather_forecast").on('click',function(){
+                $(".weather_casting").hide();
+                $("#weather_status").removeClass('active');
+                $(this).addClass('active');
+                $(".weather_forecasting").show();
+            });
+    });    
+
+    function weather_status(){
+         var city_name = document.getElementById('pac-input').value;
+         var forecast = (document.getElementById('pac-input').value).split(',');
+
+            if(city_name == ''){
+                alert("Please Enter The City Name")
+            }
+            else{
+                $(".overlay").show();
+                $(".weather-forecast").show();
+                $(function() {
               // strings to be used to construct request
               var apiKey = "2dc13940cbd5d31436200ab5ecc5d285";
+              var apiKey_forecast = "d6b8f8b0b4ce40dd4818a7426b9a2655";
               var baseURL = "http://api.openweathermap.org/data/2.5/weather?q="+city_name;
+              var forecastURL = "http://api.openweathermap.org/data/2.5/forecast/daily?q="+forecast;
+             
               // stores latitude and longitude attributes of requested JSON resource
               var latitude, longitude;
 
@@ -105,10 +122,10 @@ $(document).ready(function() {
 
               function success(position) {
                 /* if browser returns location, displays weather for that location */
-
                 latitude = position.coords.latitude;
                 longitude = position.coords.longitude;
-                display(constructRequest(latitude, longitude));
+                display(constructRequest(latitude, longitude),forecast_contructor());
+
               }
 
               function fail() {
@@ -117,14 +134,17 @@ $(document).ready(function() {
               }
 
               function constructRequest(lat, longi) {
-               
                 /* constructs and returns http request based on user's latitude and longitude */
-                    return baseURL + "?lat=" + lat + "&lon=" + longi + "&APPID=" + apiKey +"&units=metric";
+                    return baseURL + "?lat=" + lat + "&lon=" + longi + "&APPID=" + apiKey +"&units=metric&type=accurate";
+              }
+              function forecast_contructor(){
+                    return forecastURL+"&APPID=" + apiKey_forecast+"&mode=JSON&units=metric&units=imperial";; 
               }
 
-              function display(req) {
-                /* displays the weather description given by the requested JSON object */
-                $.getJSON(req,
+
+              function display(req,req1) {
+                console.log(req1)
+                 $.getJSON(req,
                   function(data) {
                     console.log(data)
                     $("#city_name").text(city_name);
@@ -134,12 +154,41 @@ $(document).ready(function() {
                     $('#weather_img').attr('src',"http://openweathermap.org/img/w/"+data.weather[0].icon+".png");
                   }
                 );
+
+                $.getJSON(req1,
+                  function(data1) {
+                   console.log(data1);
+                    for(i=0;i<=data1.list.length;i++){
+                        unix_timestamp = data1.list[i].dt;
+                        console.log(unix_timestamp);
+                        var date = new Date(unix_timestamp*1000);
+                        console.log(date.toString());
+                        var hours = date.getHours();
+                        var minutes = "0" + date.getMinutes();
+                        var seconds = "0" + date.getSeconds();
+                        var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                        console.log(formattedTime)
+
+                        // $("#date_").text(date.toString());
+                        // $("#date_wise_img").attr('src','http://openweathermap.org/img/w/'+data1.list[i].weather[0].icon+'.png')
+                        // $("#date_humidity").text(data1.list[i].humidity);
+                        // $("#date_min_temp").text(data1.list[i].temp.min);
+                        // $("#date_max_temp").text(data1.list[i].temp.max);
+                        // $("#date_status").text(data1.list[i].weather[0].description);
+
+
+                        $("#forecast_data").append("<li><span>"+date.toString()+"</span><h1><img src='http://openweathermap.org/img/w/"+data1.list[i].weather[0].icon+".png'></h1><span class='humidity'>Humidity : "+data1.list[i].humidity+"%</span> <span class='max-temp'>Max. Temperature : "+data1.list[i].temp.max+"%</span> <span class='min-temp'>Min. Temperature : "+data1.list[i].temp.min+"%</span> <span class='weather-description'>Status : "+data1.list[i].weather[0].description+"</span> </li>")
+
+                    }
+                  }
+                );
+
               }
 
               getLocation();
             });
-    })
-
+        }
+    }
     /* Gmail API */ 
     $("#check_mail").click(function(){
        //  var user_id = document.getElementById("profile_id").value;
@@ -321,7 +370,15 @@ function initMap(place_search) {
 }
 
 function callback(results, status) {
-    console.log("Result : "+ results)
+    if(results == ''){
+       var confirm_result =  confirm("No data found..!! Do You want to Search Again");
+           if (confirm_result == true) {
+                window.location.reload();
+            } else {
+               window.location.reload();
+            }
+    }
+   // console.log("Result : "+ results)
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             createMarker(results[i]);
@@ -354,8 +411,6 @@ function initAutocomplete() {
     var map_height = height_ele-52;
     $("#map").css('height',map_height);
     $("aside").css('height',map_height);
-
-
 
     $("#user_profile").hide();
     setInterval(function() {

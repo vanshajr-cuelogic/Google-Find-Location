@@ -174,18 +174,20 @@ html, body {
           margin: 20px 0 0 0;
         }
         aside{
-            width: auto;
-            max-width: 300px;
-            position: absolute;
-            left: 0px;
-            height: 667px;
-            overflow: auto;
-            z-index: 2;
-            margin: 0;
-            padding: 0;
-            background: #fff;
-            -webkit-transition: width 2s; /* Safari */
-            transition: width 2s;
+          background: #4285f4;
+          width: auto;
+          max-width: 300px;
+          position: absolute;
+          left: 0px;
+          height: 667px;
+          overflow: auto;
+          z-index: 2;
+          margin: 0;
+          padding: 0;
+          -webkit-transition: width 2s; /* Safari */
+          transition: width 2s;
+         opacity: 0.8;
+          font-size: 14px;
         }
         aside ul{
           margin:0;
@@ -193,15 +195,23 @@ html, body {
         }
         #Location_name li{
           display: block;
+          color: #e8e8e8;
+          opacity: 0.9;
           margin: 5px;
           border-bottom: 1px solid #ccc;
           padding: 5px 0;
         }
+
         #Location_name li:last-child{
           border-bottom:none;
         }
         .location-name{
           font-weight: bold;
+        }
+        #Location_name li:hover{
+          opacity: 1;
+          color: #fff;
+          cursor:default; 
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -234,7 +244,7 @@ html, body {
             opacity: 0.8;
             color: #000;
             border:2px solid #555;
-            overflow: auto;
+            overflow: hidden;
         }
         .weather-icon{
           width: 12%;
@@ -250,12 +260,85 @@ html, body {
           font-weight: bold;
         }
          .aside_height{
-          height:94px !important;
+            width: 30px !important;
+            box-shadow: 2px 1px 2px 3px #4285f4;
+            background: #4285f4;
+            color: #4285f4;
+            border-radius: 0 1px 0px 0;
+            font-size: 12px;
+            overflow: hidden;
+            opacity: 0.8;
+            cursor: pointer;
+            height: 130px !important;
+            cursor: pointer;
+            border-radius: 0 15px;
+            position: absolute;
+            top: 40%;
+        }
+        .aside_height > #Location_name > li{
+          color: #4285f4;
         }
        #back_btn{
           visibility: hidden;
         }   
+      .toggle_btn{
+        border: 1px solid #999;
+        position: absolute;
+        margin: auto;
+        top: 10px;
+        left: 0;
+        right: 0;
+        width: 51%;
+        font-size: 15px;
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        height:25px;
+      }
+      .toggle_btn span{
+        cursor: pointer;
+        padding: 20px;
+        vertical-align: middle;
+      }
+      .toggle_btn span.active{
+        background: #4285f4;
+        color: #fff
+      }
+      .weather_forecasting{
+        margin-top:10%;
+      }
+      .weather_forecasting{
+        display: none;
+      }
+      #forecast_data{
+        padding: 0;
+      }
+      #forecast_data h1{
+        margin: 0;
+        padding: 0;
+      }
+      #forecast_data li{
+        font-size: 16px;
+        list-style-type: none;
+        width: 46%;
+        float: left;
+        padding: 15px 0;
+        background: #fff;
+        margin: 5px 10px;
+        border-radius: 5px;
+      }
+      #forecast_data li span{
+        display: block;
+        font-size: 14px;
+      }
+      .forecast-details{
+        overflow: auto;
+        max-height: 366px;
+        margin-top: 15px;
+      }
 
+
+/**/
 @media(max-width:1024px){
   body{
     background: #4285f4;
