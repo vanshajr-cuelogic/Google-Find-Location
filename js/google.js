@@ -167,15 +167,7 @@ $(document).ready(function() {
                         var minutes = "0" + date.getMinutes();
                         var seconds = "0" + date.getSeconds();
                         var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-                        console.log(formattedTime)
-
-                        // $("#date_").text(date.toString());
-                        // $("#date_wise_img").attr('src','http://openweathermap.org/img/w/'+data1.list[i].weather[0].icon+'.png')
-                        // $("#date_humidity").text(data1.list[i].humidity);
-                        // $("#date_min_temp").text(data1.list[i].temp.min);
-                        // $("#date_max_temp").text(data1.list[i].temp.max);
-                        // $("#date_status").text(data1.list[i].weather[0].description);
-
+                        console.log(formattedTime);
 
                         $("#forecast_data").append("<li><span>"+date.toString()+"</span><h1><img src='http://openweathermap.org/img/w/"+data1.list[i].weather[0].icon+".png'></h1><span class='humidity'>Humidity : "+data1.list[i].humidity+"%</span> <span class='max-temp'>Max. Temperature : "+data1.list[i].temp.max+"%</span> <span class='min-temp'>Min. Temperature : "+data1.list[i].temp.min+"%</span> <span class='weather-description'>Status : "+data1.list[i].weather[0].description+"</span> </li>")
 
@@ -191,21 +183,7 @@ $(document).ready(function() {
     }
     /* Gmail API */ 
     $("#check_mail").click(function(){
-       //  var user_id = document.getElementById("profile_id").value;
-
-       //  var CLIENT_ID = '138230497832-e524d5qpd4tkgl45g27nct1j1gb651oc.apps.googleusercontent.com';
-       // // var SCOPES = ['https://www.googleapis.com/gmail/v1/users/'+user_id+'/messages'];
-       //   var SCOPES = ['https://www.googleapis.com/auth/gmail.labels'];
-
-       //  console.log(CLIENT_ID,SCOPES)
-
-       //   gapi.auth.authorize(
-       //        {
-       //          'client_id': CLIENT_ID,
-       //          'scope': SCOPES.join(' '),
-       //          'immediate': true
-       //        }, handleAuthResult);
-
+       alert("loadGmailApi() will give the mail access and appendMessageRow() will inbox mail")
     });
 
     $("#location_access").on('click',function() {
@@ -218,14 +196,9 @@ $(document).ready(function() {
     }
 });
 
-
-
-//onSignInCallback();
-/* Handler for the signin callback triggered after the user selects an account.*/
 function onSignInCallback(resp) {
-   
-        hide_content();
-   
+    hide_content();
+    loadGmailApi();
     gapi.client.load('plus', 'v1', function() {
         var request = gapi.client.plus.people.get({
             'userId': 'me'
@@ -249,90 +222,39 @@ function onSignInCallback(resp) {
             $("#email").text(resp.emails[0].value);
             $("#place_name").show();
         });
-    });
- $("#pac-input").focus();
-}
-
-/**************** Message  ************/ 
-
-/**
-       * Handle response from authorization server.
-       *
-       * @param {Object} authResult Authorization result.
-       */
-      function handleAuthResult(authResult) {
-        console.log(authResult)
-        var authorizeDiv = document.getElementById('authorize-div');
-        if (authResult && !authResult.error) {
-          // Hide auth UI, then load client library.
-          authorizeDiv.style.display = 'none';
-          loadGmailApi();
-        } else {
-          // Show auth UI, allowing the user to initiate authorization by
-          // clicking authorize button.
-          authorizeDiv.style.display = 'inline';
-        }
+          });
+       $("#pac-input").focus();
       }
 
-      /**
-       * Initiate auth flow in response to user clicking authorize button.
-       *
-       * @param {Event} event Button click event.
-       */
-      function handleAuthClick(event) {
-        gapi.auth.authorize(
-          {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
-          handleAuthResult);
-        return false;
-      }
-
-      /**
-       * Load Gmail API client library. List labels once client library
-       * is loaded.
-       */
       function loadGmailApi() {
         gapi.client.load('gmail', 'v1', listLabels);
       }
 
-      /**
-       * Print all Labels in the authorized user's inbox. If no labels
-       * are found an appropriate message is printed.
-       */
       function listLabels() {
-        var request = gapi.client.gmail.users.labels.list({
-           'userId': 'me'
+         var request = gapi.client.gmail.users.messages.list({
+          'userId': 'me',
+          'id': 'INBOX',
+          'maxResults': 10
         });
 
         request.execute(function(resp) {
-            alert()
-          var labels = resp.labels;
-          console.log(labels)
-          appendPre('Labels:');
+          console.log(resp)
+           $.each(resp.messages, function() {
+            var messageRequest = gapi.client.gmail.users.messages.get({
+            'userId': 'me',
+            'id': this.id
+          });
 
-          if (labels && labels.length > 0) {
-            for (i = 0; i < labels.length; i++) {
-              var label = labels[i];
-              appendPre(label.name)
-            }
-          } else {
-            appendPre('No Labels found.');
-          }
+          messageRequest.execute(appendMessageRow);
+          });
         });
       }
 
-      /**
-       * Append a pre element to the body containing the given message
-       * as its text node.
-       *
-       * @param {string} message Text to be placed in pre element.
-       */
-      function appendPre(message) {
-        var pre = document.getElementById('output');
-        var textContent = document.createTextNode(message + '\n');
-        pre.appendChild(textContent);
+      function appendMessageRow(message) {
+        console.log(message)
       }
 
-/*******************************/
+/******************EMAIL*************/
 
 /**
  * Sets up an API call after the Google API client loads.
