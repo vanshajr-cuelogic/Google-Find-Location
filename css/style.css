@@ -1,14 +1,14 @@
-html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        font-family: 'Lato', sans-serif;
-        /*font-family: 'Slabo 27px', serif;*/
-      }
-      #map {
-        height: 100%;
-        width:100%;
-      }
+        html, body {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+          font-family: 'Lato', sans-serif;
+          /*font-family: 'Slabo 27px', serif;*/
+        }
+        #map {
+          height: 100%;
+          width:100%;
+        }
         .controls {
           margin-top: 10px;
           border: 1px solid transparent;
@@ -35,10 +35,6 @@ html, body {
           border-color: #4d90fe;
         }
 
-       /* .pac-container {
-          font-family: Roboto;
-        }
-*/
         #type-selector {
           color: #fff;
           background-color: #4d90fe;
@@ -133,6 +129,11 @@ html, body {
          margin:10px 15px;
          overflow: hidden;
         }
+        .detail_header>span{
+            font-size: 27px;
+            color: #fff;
+            padding: 0 10px;
+        }
         #name{
           color: #fff;
           text-decoration: none;
@@ -213,6 +214,7 @@ html, body {
           color: #fff;
           cursor:default; 
         }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -336,9 +338,54 @@ html, body {
         max-height: 366px;
         margin-top: 15px;
       }
+      .mail_popup{
+          position: absolute;
+          width: 60%;
+          height: 480px;
+          overflow: hidden;
+          margin: auto;
+          left: 0;
+          top: 0;
+          z-index: 2;
+          background: #fff;
+          bottom: 0;
+          right: 0;
+      }
+      .mail_box_over_popup{
+        height: 427px;
+        overflow: auto;
+      }
+      .mail_list_container{
+        padding: 0;
+        margin: 0;
+      }
+      .mail-list{
+        list-style-type: none;
+        padding: 15px 23px;
+        background: #a3c5fd;
+        border-bottom: 1px solid #005f9b;
+      }
+       .mail-list:hover{
+        background: #8fd1fc;
+       }
+       #fb_like_btn{
+        position: absolute;
+        z-index: 2;
+        right: 21%;
+        top: 16px;
+        color: #fff;
+        overflow: hidden;
+       }
+       #fb_like_btn *{
+        color: #fff !important;
+       }
+       #fb_login_btn_log{
+        position: absolute;
+        z-index: 2;
+        right: 10%;
+       }
 
-
-/**/
+/****************************** RESPONSIVE ***************************/
 @media(max-width:1024px){
   body{
     background: #4285f4;

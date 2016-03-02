@@ -36,12 +36,34 @@ function hide_content() {
     $("#back_to_main").hide();
     $(".weather-forecast").hide();
     $("#back_btn").hide();
+    $(".mail_popup").hide();
 }
 
+
+function facebook_api(){
+   window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '591248257694566',
+      xfbml      : true,
+      version    : 'v2.5'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+}
 
 /* Ready Function */
 $(document).ready(function() {
     hide_content();
+    facebook_api();
+
+
     $("#back_to_main, #back_btn").click(function(){
             window.location.reload();
         });
@@ -181,9 +203,11 @@ $(document).ready(function() {
             });
         }
     }
-    /* Gmail API */ 
+    /* GMAIL */ 
     $("#check_mail").click(function(){
-       alert("loadGmailApi() will give the mail access and appendMessageRow() will inbox mail")
+       console.log("loadGmailApi() will give the mail access and appendMessageRow() will inbox mail");
+       $(".overlay").show();
+       $(".mail_popup").show();
     });
 
     $("#location_access").on('click',function() {
@@ -230,28 +254,72 @@ function onSignInCallback(resp) {
         gapi.client.load('gmail', 'v1', listLabels);
       }
 
-      function listLabels() {
-         var request = gapi.client.gmail.users.messages.list({
-          'userId': 'me',
-          'id': 'INBOX',
-          'maxResults': 10
+      function list_label(){
+         var request = gapi.client.gmail.users.labels.list({
+          'userId': 'me'
         });
 
         request.execute(function(resp) {
-          console.log(resp)
-           $.each(resp.messages, function() {
-            var messageRequest = gapi.client.gmail.users.messages.get({
-            'userId': 'me',
-            'id': this.id
-          });
-
-          messageRequest.execute(appendMessageRow);
-          });
+          for(i=0;i<=resp.labels.length;i++){
+            $("#label_list").append("<option class='label-list'>"+resp.labels[i].name+"</option>")
+          }
         });
       }
 
+      function listLabels() {
+        list_label();
+
+        // $("#label_list").change(function(){
+        //   var str = "";
+        //     $( "#label_list option:selected" ).each(function() {
+        //       str += $( this ).text();
+        //     });
+        //     console.log(str);
+        // })
+          var str='INBOX'; 
+          $("#label_list").change(function(){
+             $("mail_container li").remove();
+               $( "#label_list option:selected" ).each(function() {
+                 str = $( this ).text();
+                 //console.log("sds:"+str);
+                 });
+                 // var request = gapi.client.gmail.users.messages.list({
+                 //    'userId': 'me',
+                 //    'id':str
+                 //    // 'maxResults': 10
+                 //  });
+                 //   request.execute(function(resp) {
+                 //    // console.log(resp.messages)
+                 //     $.each(resp.messages, function() {
+                 //      var messageRequest = gapi.client.gmail.users.messages.get({
+                 //      'userId': 'me',
+                 //      'id': this.id
+                 //    });
+                 //     messageRequest.execute(appendMessageRow);
+                 //    });
+                 //  });
+                
+            });
+            var request = gapi.client.gmail.users.messages.list({
+                'userId': 'me',
+                'id':str
+                // 'maxResults': 10
+              });
+               request.execute(function(resp) {
+                 $.each(resp.messages, function() {
+                  var messageRequest = gapi.client.gmail.users.messages.get({
+                  'userId': 'me',
+                  'id': this.id,
+                  'format': 'metadata'
+                });
+                 messageRequest.execute(appendMessageRow);
+                });
+              });
+      }
+
       function appendMessageRow(message) {
-        console.log(message)
+         console.log(message)
+        $("#mail_container").append("<li class='mail-list'>"+message.snippet+"</li>")
       }
 
 /******************EMAIL*************/
