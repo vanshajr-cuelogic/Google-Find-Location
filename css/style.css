@@ -365,26 +365,27 @@
         background: #a3c5fd;
         border-bottom: 1px solid #005f9b;
       }
-       .mail-list:hover{
+      .mail-list:hover{
         background: #8fd1fc;
-       }
-       #fb_like_btn{
-        position: absolute;
-        z-index: 2;
-        right: 21%;
-        top: 16px;
-        color: #fff;
+      }
+      #fb_like_btn{
         overflow: hidden;
-       }
-       #fb_like_btn *{
-        color: #fff !important;
-       }
-       #fb_login_btn_log{
+        word-wrap: break-word;
         position: absolute;
-        z-index: 2;
-        right: 10%;
-       }
-
+        top: 30%;
+        right: 20%;
+      }
+      .facebook_img{
+        padding: 0 !important;
+        height: 35px;
+        vertical-align: middle;
+      }
+      #facebook_profile img{
+        border-radius: 5px;
+      }
+      .facebook_img:hover{
+        background: none !important;
+      }
 /****************************** RESPONSIVE ***************************/
 @media(max-width:1024px){
   body{

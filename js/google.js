@@ -37,33 +37,58 @@ function hide_content() {
     $(".weather-forecast").hide();
     $("#back_btn").hide();
     $(".mail_popup").hide();
+    $(".facebook_img").hide();
 }
 
 
 function facebook_api(){
-   window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '591248257694566',
-      xfbml      : true,
-      version    : 'v2.5'
-    });
-  };
+     window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '591248257694566',
+        xfbml      : true,
+        cookie     : true,  // enable cookies to allow the server to access 
+                          // the session
+        version    : 'v2.5'
+      });
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-}
+     FB.getLoginStatus(function(response) {
+        if (response.status === 'connected') {
+          console.log("Logged In..!!")
+          testAPI();
+          $(".facebook_img").show();
+        }
+        else {
+          FB.login();
+        }
+      });
+    };
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) { console.log("asdsdsa: "+id)}  //return;
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+  }
+
+function testAPI() {
+    //http://www.loginradius.com/engineering/using-facebook-graph-api-after-login/
+    FB.api('/me/picture','Get', function(response) {
+      console.log(response.data.url);
+      $("#facebook_profile img").attr('src',response.data.url);
+    });
+    FB.api('/me?fields=id,name,about,age_range,bio,birthday,email', function(response) {
+      //console.log(response);
+      $("#facebook_profile").attr('href','https://www.facebook.com/'+response.id);
+    });
+    // FB.api('/me/albums',function(response){
+    //  // console.log(response)
+    // })
+  }
 
 /* Ready Function */
 $(document).ready(function() {
     hide_content();
-    facebook_api();
-
-
     $("#back_to_main, #back_btn").click(function(){
             window.location.reload();
         });
@@ -96,8 +121,6 @@ $(document).ready(function() {
     $("aside").click(function(){
         $('aside').toggleClass('aside_height');
     });
-
-   
 
     $("#weather_report").click(function(){
         weather_status();
@@ -165,10 +188,10 @@ $(document).ready(function() {
 
 
               function display(req,req1) {
-                console.log(req1)
+              //  console.log(req1)
                  $.getJSON(req,
                   function(data) {
-                    console.log(data)
+                   // console.log(data)
                     $("#city_name").text(city_name);
                     $("#city_humid").text(data.main.humidity);
                     $("#city_temp").text(data.main.temp);
@@ -179,17 +202,17 @@ $(document).ready(function() {
 
                 $.getJSON(req1,
                   function(data1) {
-                   console.log(data1);
+                  // console.log(data1);
                     for(i=0;i<=data1.list.length;i++){
                         unix_timestamp = data1.list[i].dt;
-                        console.log(unix_timestamp);
+                      //  console.log(unix_timestamp);
                         var date = new Date(unix_timestamp*1000);
-                        console.log(date.toString());
+                       // console.log(date.toString());
                         var hours = date.getHours();
                         var minutes = "0" + date.getMinutes();
                         var seconds = "0" + date.getSeconds();
                         var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-                        console.log(formattedTime);
+                     //   console.log(formattedTime);
 
                         $("#forecast_data").append("<li><span>"+date.toString()+"</span><h1><img src='http://openweathermap.org/img/w/"+data1.list[i].weather[0].icon+".png'></h1><span class='humidity'>Humidity : "+data1.list[i].humidity+"%</span> <span class='max-temp'>Max. Temperature : "+data1.list[i].temp.max+"%</span> <span class='min-temp'>Min. Temperature : "+data1.list[i].temp.min+"%</span> <span class='weather-description'>Status : "+data1.list[i].weather[0].description+"</span> </li>")
 
@@ -223,6 +246,7 @@ $(document).ready(function() {
 function onSignInCallback(resp) {
     hide_content();
     loadGmailApi();
+    facebook_api();
     gapi.client.load('plus', 'v1', function() {
         var request = gapi.client.plus.people.get({
             'userId': 'me'
@@ -318,7 +342,7 @@ function onSignInCallback(resp) {
       }
 
       function appendMessageRow(message) {
-         console.log(message)
+        // console.log(message)
         $("#mail_container").append("<li class='mail-list'>"+message.snippet+"</li>")
       }
 
