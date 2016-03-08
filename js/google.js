@@ -54,7 +54,7 @@ function facebook_api(){
 
      FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
-          console.log("Logged In..!!")
+//          console.log("Logged In..!!")
           testAPI();
           $(".facebook_img").show();
         }
@@ -75,7 +75,7 @@ function facebook_api(){
 function testAPI() {
     //http://www.loginradius.com/engineering/using-facebook-graph-api-after-login/
     FB.api('/me/picture','Get', function(response) {
-      console.log(response.data.url);
+//      console.log(response.data.url);
       $("#facebook_profile img").attr('src',response.data.url);
     });
     FB.api('/me?fields=id,name,about,age_range,bio,birthday,email', function(response) {
@@ -89,7 +89,7 @@ function testAPI() {
 
 
 function view_start_analytics(param1){
-    console.log(param1);
+//    console.log(param1);
     var background = {
                 type: 'linearGradient',
                 x0: 0,
@@ -249,19 +249,21 @@ $(document).ready(function() {
                 $.getJSON(req1,
                   function(data1) {
                   // console.log(data1);
+                    // alert(data1.list[1].dt)
                     for(i=0;i<=data1.list.length;i++){
-                        unix_timestamp = data1.list[i].dt;
+
+                    //    unix_timestamp = data1.list[i].dt;
                       //  console.log(unix_timestamp);
-                        var date = new Date(unix_timestamp*1000);
+                      //  var date = new Date(unix_timestamp*1000);
                        // console.log(date.toString());
-                        var hours = date.getHours();
-                        var minutes = "0" + date.getMinutes();
-                        var seconds = "0" + date.getSeconds();
-                        var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                     //   var hours = date.getHours();
+                     //   var minutes = "0" + date.getMinutes();
+                     //   var seconds = "0" + date.getSeconds();
+                     //   var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
                      //   console.log(formattedTime);
                          // alert(data1.list[i].humidity);
-                        
-                        $("#forecast_data").append("<li><span>"+date.toString()+"</span><h1><img src='http://openweathermap.org/img/w/"+data1.list[i].weather[0].icon+".png'></h1><span class='humidity'>Humidity : "+data1.list[i].humidity+"%</span> <span class='max-temp'>Max. Temperature : "+data1.list[i].temp.max+"%</span> <span class='min-temp'>Min. Temperature : "+data1.list[i].temp.min+"%</span> <span class='weather-description'>Status : "+data1.list[i].weather[0].description+"</span> </li>")
+                        // <span>"+date.toString()+"</span>
+                        $("#forecast_data").append("<li><h1><img src='http://openweathermap.org/img/w/"+data1.list[i].weather.icon+".png'></h1><span class='humidity'>Humidity : "+data1.list[i].humidity+"%</span> <span class='max-temp'>Max. Temperature : "+data1.list[i].temp.max+"%</span> <span class='min-temp'>Min. Temperature : "+data1.list[i].temp.min+"%</span> <span class='weather-description'>Status : "+data1.list[i].weather[0].description+"</span> </li>")
                        array_name.push(data1.list[i].temp.max);
                        view_start_analytics(array_name)
                     }
@@ -333,21 +335,13 @@ function onSignInCallback(resp) {
 
         request.execute(function(resp) {
           for(i=0;i<=resp.labels.length;i++){
-            $("#label_list").append("<option class='label-list'>"+resp.labels[i].name+"</option>")
+            //$("#label_list").append("<option class='label-list'>"+resp.labels[i].name+"</option>")
           }
         });
       }
 
       function listLabels() {
         list_label();
-
-        // $("#label_list").change(function(){
-        //   var str = "";
-        //     $( "#label_list option:selected" ).each(function() {
-        //       str += $( this ).text();
-        //     });
-        //     console.log(str);
-        // })
           var str='INBOX'; 
           $("#label_list").change(function(){
              $("mail_container li").remove();
@@ -462,7 +456,7 @@ function createMarker(place) {
         infowindow.open(map, this);
     });
 }
-google.maps.event.addDomListener(window, 'load', initialize);
+  //google.maps.event.addDomListener(window, 'load', initialize);
 
 
 
