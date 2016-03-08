@@ -9,6 +9,9 @@
     <script src="js/place_search.js"></script>
     <script src = "http://plus.google.com/js/client:platform.js" async defer></script>
     <script src="https://apis.google.com/js/client.js" async defer></script>
+    <script src="jq_chart/js/jquery.mousewheel.js" type="text/javascript"></script>
+    <script src="jq_chart/js/jquery.jqChart.min.js" type="text/javascript"></script>
+    <script src="jq_chart/js/jquery.jqRangeSlider.min.js" type="text/javascript"></script>
     <script src="js/google.js"></script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPOZ8eYlJ-hVhVd5Ye977pQte5NG7xz7s&libraries=places&callback=initAutocomplete&signed_in=true&libraries=places,visualization"
@@ -104,6 +107,7 @@
         <div class="weather_forecasting">
             Next 7 days Weather Forecasting
             <div class="forecast-details">
+             <div id="jqChart" style="width: 570px; height: 300px;"></div>
              <ul id="forecast_data"></ul>
             </div>
         </div>

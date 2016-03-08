@@ -3,6 +3,7 @@ var map;
 var infowindow;
 var pyrmont;
 var position_viewport;
+var array_name = new Array();
 
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -85,6 +86,51 @@ function testAPI() {
     //  // console.log(response)
     // })
   }
+
+
+function view_start_analytics(param1){
+    console.log(param1);
+    var background = {
+                type: 'linearGradient',
+                x0: 0,
+                y0: 0,
+                x1: 0,
+                y1: 1,
+                colorStops: [{ offset: 0, color: 'transparent' },
+                             { offset: 1, color: 'transparent' }]
+            };
+
+                $('#jqChart').jqChart({
+                title: { text: 'Weather Forecast' },
+                legend: { title: 'Weather' },
+                border: { strokeStyle: 'transparent' },
+                background: background,
+                animation: { duration: 1 },
+                shadows: {
+                    enabled: true
+                },
+                series: [
+                    {
+                        type: 'pie',
+                        fillStyles: ['#418CF0', '#FCB441', '#E0400A', '#056492', '#BFBFBF', '#1A3B69', '#FFE382'],
+                        labels: {
+                            // stringFormat: '%.1f%%',
+                            stringFormat: 'degree',
+                            valueType: 'percentage',
+                            font: '15px sans-serif',
+                            fillStyle: 'white'
+                        },
+                        explodedRadius: 10,
+                        explodedSlices: [5],
+                        // data: [['United States', 65], ['United Kingdom', 58], ['Germany', 30],
+                        //        ['India', 60], ['Russia', 65], ['China', 75]]
+                        data: param1
+
+                    }
+                ]
+            });
+}
+
 
 /* Ready Function */
 $(document).ready(function() {
@@ -213,18 +259,20 @@ $(document).ready(function() {
                         var seconds = "0" + date.getSeconds();
                         var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
                      //   console.log(formattedTime);
-
+                         // alert(data1.list[i].humidity);
+                        
                         $("#forecast_data").append("<li><span>"+date.toString()+"</span><h1><img src='http://openweathermap.org/img/w/"+data1.list[i].weather[0].icon+".png'></h1><span class='humidity'>Humidity : "+data1.list[i].humidity+"%</span> <span class='max-temp'>Max. Temperature : "+data1.list[i].temp.max+"%</span> <span class='min-temp'>Min. Temperature : "+data1.list[i].temp.min+"%</span> <span class='weather-description'>Status : "+data1.list[i].weather[0].description+"</span> </li>")
-
+                       array_name.push(data1.list[i].temp.max);
+                       view_start_analytics(array_name)
                     }
                   }
                 );
-
               }
-
+ 
               getLocation();
             });
         }
+      
     }
     /* GMAIL */ 
     $("#check_mail").click(function(){
