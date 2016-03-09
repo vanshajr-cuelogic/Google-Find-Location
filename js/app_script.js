@@ -142,7 +142,7 @@ $(document).ready(function() {
   // };
   // navigator.geolocation.getCurrentPosition(geoSuccess);
 
-  
+
     hide_content();
     $("#back_to_main, #back_btn").click(function(){
             window.location.reload();
@@ -343,7 +343,7 @@ function onSignInCallback(resp) {
 
         request.execute(function(resp) {
           for(i=0;i<=resp.labels.length;i++){
-            $("#label_list").append("<option class='label-list'>"+resp.labels[i].name+"</option>")
+//            $("#label_list").append("<option class='label-list'>"+resp.labels[i].name+"</option>")
           }
         });
       }
@@ -466,7 +466,7 @@ function createMarker(place) {
         infowindow.open(map, this);
     });
 }
-google.maps.event.addDomListener(window, 'load', initialize);
+//google.maps.event.addDomListener(window, 'load', initialize);
 
 
 
