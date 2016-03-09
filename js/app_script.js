@@ -82,9 +82,9 @@ function testAPI() {
       //console.log(response);
       $("#facebook_profile").attr('href','https://www.facebook.com/'+response.id);
     });
-    // FB.api('/me/albums',function(response){
-    //  // console.log(response)
-    // })
+    FB.api('/me/friends',function(response){
+     // console.log(response)
+    })
   }
 
 
@@ -133,6 +133,16 @@ function view_start_analytics(param1){
 
 /* Ready Function */
 $(document).ready(function() {
+
+  // var startPos;
+  // var geoSuccess = function(position) {
+  //   startPos = position;
+  //   document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+  //   document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+  // };
+  // navigator.geolocation.getCurrentPosition(geoSuccess);
+
+  
     hide_content();
     $("#back_to_main, #back_btn").click(function(){
             window.location.reload();
@@ -283,6 +293,7 @@ $(document).ready(function() {
     $("#location_access").on('click',function() {
         $("#resturant-input").show();
         $("#back_to_main").show();
+         $("#weather_report").hide();
     });
 
     for (var i = 0; i < place_search_type.length; i++) {
